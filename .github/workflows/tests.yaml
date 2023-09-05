@@ -1,4 +1,4 @@
-name: Go
+name: Infoplus Tests
 on: [push]
 
 jobs:
