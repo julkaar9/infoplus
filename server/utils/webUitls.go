@@ -5,6 +5,8 @@ import (
 	"errors"
 	"io"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 var ErrBadRequest = errors.New("infoplus: Bad request")
@@ -28,4 +30,13 @@ func JsonDecode(url string) (map[string]interface{}, error) {
 		return nil, err
 	}
 	return resultJson, nil
+}
+
+func GetQueryOrDefault(c *gin.Context, urlParam string, defaultValue string) string {
+	queryList, ok := c.Request.URL.Query()[urlParam]
+	query := defaultValue
+	if ok && len(queryList) > 0 {
+		query = queryList[0]
+	}
+	return query
 }
