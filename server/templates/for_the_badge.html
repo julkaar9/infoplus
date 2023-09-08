@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{{.TotalWidth}}" height="28"
+    id="svg1">
+    <g shape-rendering="crispEdges">
+        <rect width="{{.LabelWidth}}" height="28" fill="#{{.LabelColor}}"></rect>
+        <rect x="{{.LabelWidth}}" width="{{.MessageWidth}}" height="28" fill="#{{.MessageColor}}"></rect>
+    </g>
+    <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="10">
+        <text x="{{.LabelX}}" y="17.5" lengthAdjust="spacing">{{.Label}}</text>
+        <text x="{{.MessageX}}" y="17.5" font-weight="bold" lengthAdjust="spacing">{{.Message}}</text>
+    </g>
+</svg>
