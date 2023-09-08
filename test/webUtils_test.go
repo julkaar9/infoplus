@@ -4,6 +4,9 @@ import (
 	"infoplus/server/utils"
 	"reflect"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestJsonDecode(t *testing.T) {
@@ -44,4 +47,38 @@ func TestJsonDecode(t *testing.T) {
 			t.Errorf("got %s want %s", got, tt.want)
 		}
 	}
+}
+
+func TestQGetQueryOrDefault(t *testing.T) {
+	const url = "/test/getQuery"
+	r, err := GetGinRouter()
+	if err != nil {
+		t.Fail()
+	}
+	queryParamTests := []struct {
+		key          string
+		want         string
+		defaultValue string
+	}{
+		{"userid", "1111111", "123456789"},
+		{"style", "plastic", "flat"},
+		{"labelcolor", "45ce93", "555555"},
+		{"messagecolor", "3d2319", "97ca00"},
+		{"notInQueryParm", "value", "value"},
+	}
+
+	r.GET(url, func(c *gin.Context) {
+		for _, tt := range queryParamTests {
+			got := utils.GetQueryOrDefault(c, tt.key, tt.defaultValue)
+			assert.Equal(t, tt.want, got)
+		}
+	})
+
+	urlParams := make(map[string]string)
+	for _, tt := range queryParamTests {
+		urlParams[tt.key] = tt.want
+	}
+	w, req := GetHttpRecorder(url, urlParams)
+	r.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
 }
